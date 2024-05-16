@@ -2,3 +2,4 @@ node_modules
 build
 user-requests/
 deploy.js
+.env
