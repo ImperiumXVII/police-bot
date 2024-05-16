@@ -19,7 +19,7 @@ export class PoliceBot {
     static Browser: puppeteer.Browser;
 
     static async Init(): Promise<void> {
-        await this.Client.login(process.env.DISCORD_TOKEN);
+        await this.Client.login(environment.discord_id);
         this.Client.on('ready', async () => {
             await this.Client.guilds.fetch();
             const g = this.Client.guilds.cache.first();
