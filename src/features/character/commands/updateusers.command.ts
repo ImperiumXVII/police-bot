@@ -15,7 +15,7 @@ import { LogSystem } from '../../log';
 export class UpdateUsersCommand extends BaseCommand {
 	async run(user: DiscordEntity, message: Message): Promise<void> {
 		const updateLog = await message.channel.send('Updating user list...');
-		const purgedUsers = await Character.PurgeTerminated().catch(e => LogSystem.Error('Purge', e));
+		const purgedUsers = await Character.PurgeTerminated().catch((e) => LogSystem.Error('Purge', e));
 		await updateLog.edit(updateLog.content + '\nPurged the folowing users:\n' + purgedUsers);
 
 		for (let x = 0; x < 4; x++) {
@@ -26,7 +26,7 @@ export class UpdateUsersCommand extends BaseCommand {
 			}
 		}
 
-		await Character.SetAllDiscordRoles().then(() => message.channel.send('Set all users\' permissions.'));
+		await Character.SetAllDiscordRoles().then(() => message.channel.send("Set all users' permissions."));
 
 		Character.LoadFactionMembers().then(() => message.channel.send('Reloaded all faction members.'));
 	}

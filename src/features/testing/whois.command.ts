@@ -63,10 +63,7 @@ export class WhoisCommand extends BaseCommand {
 				})
 				.join('\n');
 			if (altCharacters.length) {
-				infoEmbed.addFields(
-					{ name: '\u200B', value: '\u200B', inline: true },
-					{ name: 'Alternate Characters', value: altCharacters, inline: true },
-				);
+				infoEmbed.addFields({ name: '\u200B', value: '\u200B', inline: true }, { name: 'Alternate Characters', value: altCharacters, inline: true });
 			}
 		}
 		message.channel.send({ embeds: [infoEmbed] });

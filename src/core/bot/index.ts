@@ -11,12 +11,7 @@ import { CalloutCollector } from '../../features/callout/callout.collector';
 import { DiscordEntity } from '../../entities/discord_user.entity';
 import { TeamSpeakAPI } from '../../features/teamspeak';
 
-const intents = new Intents([
-	Intents.FLAGS.GUILD_MEMBERS,
-	Intents.FLAGS.GUILD_MESSAGES,
-	Intents.FLAGS.DIRECT_MESSAGES,
-	Intents.FLAGS.GUILDS
-]);
+const intents = new Intents([Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS]);
 
 export class PoliceBot {
 	static Client = new Client({ intents: intents });
@@ -34,10 +29,10 @@ export class PoliceBot {
 			this.Browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--lang=en-GB'], headless: true });
 			this.Client.user?.setActivity('the Los Santos Police Department', { type: 'WATCHING' });
 			await this.FetchOldCollectors();
-			if(this.Guild) {
+			if (this.Guild) {
 				try {
 					LogSystem.DiscordLog('PoliceBot', 'Ready');
-				} catch(e) {
+				} catch (e) {
 					console.log(e);
 				}
 			}

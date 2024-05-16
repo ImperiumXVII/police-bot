@@ -9,7 +9,7 @@ export class LogSystem {
 
 	static DiscordLog(feature: string, ...args: any[]): void {
 		this.Log(feature, ...args);
-		if(PoliceBot.Guild) {
+		if (PoliceBot.Guild) {
 			const channel = PoliceBot.Guild?.channels.cache.find((c) => c.name === 'bot-testing');
 			if (!channel) return;
 			(channel as TextChannel).send(`**[${feature}]** ${args.join('\n')}`);
@@ -18,7 +18,7 @@ export class LogSystem {
 
 	static Error(feature: string, ...args: any[]): void {
 		console.log(`[Error: ${feature}] ${args}`);
-		if(PoliceBot.Guild) {
+		if (PoliceBot.Guild) {
 			const channel = PoliceBot.Guild?.channels.cache.find((c) => c.name === 'bot-testing');
 			if (!channel) return;
 			(channel as TextChannel).send(`**[Error: ${feature}]** ${args.join('\n')}`);

@@ -36,10 +36,12 @@ export class TeamSpeakAPI {
 	static async Log(message: string): Promise<void> {
 		const channel = PoliceBot.Guild?.channels.cache.find((c) => c.name === 'dispatch-logs');
 		if (!channel) return;
-		(channel as TextChannel).send(`[${new Date().toLocaleTimeString('en-gb', { 
-			timeZone: 'Europe/Bratislava', 
-			hour12: false
-		})}] ${message}`);
+		(channel as TextChannel).send(
+			`[${new Date().toLocaleTimeString('en-gb', {
+				timeZone: 'Europe/Bratislava',
+				hour12: false,
+			})}] ${message}`,
+		);
 	}
 
 	static async ScanMessages(message: Message): Promise<void> {
@@ -68,8 +70,8 @@ export class TeamSpeakAPI {
 								resolve();
 							}, 500);
 						});
-						await e.client.message('Welcome. If you\'re in the LSPD, head to #teamspeak-commands on Discord and use !verifyts3');
-						await e.client.message('If you\'re in the LSSD, ask a supervisor or above to assign your groups.');
+						await e.client.message("Welcome. If you're in the LSPD, head to #teamspeak-commands on Discord and use !verifyts3");
+						await e.client.message("If you're in the LSSD, ask a supervisor or above to assign your groups.");
 					}
 					TeamSpeakAPI.LogQueue(`**${e.client.nickname}** connected.`);
 				});
@@ -92,7 +94,9 @@ export class TeamSpeakAPI {
 				teamspeak.on('textmessage', async (ev) => {
 					switch (ev.targetmode) {
 						case 1:
-							ev.invoker.nickname !== 'Police Administration' ? LogSystem.DiscordLog('TeamSpeak', `**${ev.invoker.nickname}** sent private message: ${ev.msg}`) : void 0;
+							ev.invoker.nickname !== 'Police Administration'
+								? LogSystem.DiscordLog('TeamSpeak', `**${ev.invoker.nickname}** sent private message: ${ev.msg}`)
+								: void 0;
 							break;
 						case 2:
 							LogSystem.DiscordLog('TeamSpeak', `**${ev.invoker.nickname}** sent message to Lobby channel: ${ev.msg}`);
@@ -100,7 +104,7 @@ export class TeamSpeakAPI {
 						case 3:
 							TeamSpeakAPI.Log(`**${ev.invoker.nickname}** sent server message: ${ev.msg}`);
 							break;
-						}
+					}
 				});
 
 				LogSystem.DiscordLog('TeamSpeak', 'Connected.');

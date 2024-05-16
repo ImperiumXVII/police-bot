@@ -7,10 +7,7 @@ import { Character } from '../character';
 
 export class TrainingCollector extends InteractionCollector<ButtonInteraction> {
 	constructor(client: Client, message: Message) {
-		super(
-			client,
-			{ time: 8.64e7, dispose: true, message: message },
-		);
+		super(client, { time: 8.64e7, dispose: true, message: message });
 
 		this.on('collect', async (interaction: ButtonInteraction) => {
 			const message = interaction.message as Message;
@@ -46,7 +43,7 @@ export class TrainingCollector extends InteractionCollector<ButtonInteraction> {
 				} else {
 					attending.value += `\n${rank} ${character}`;
 				}
-				if(notAttending.value.includes(character)) {
+				if (notAttending.value.includes(character)) {
 					let re = new RegExp(`\n${rank} ${character}`, 'g');
 					notAttending.value = notAttending.value.replace(re, '');
 					re = new RegExp(`${rank} ${character}`, 'g');
@@ -62,7 +59,7 @@ export class TrainingCollector extends InteractionCollector<ButtonInteraction> {
 				} else {
 					notAttending.value += `\n${rank} ${character}`;
 				}
-				if(attending.value.includes(character)) {
+				if (attending.value.includes(character)) {
 					let re = new RegExp(`\n${rank} ${character}`, 'g');
 					attending.value = attending.value.replace(re, '');
 					re = new RegExp(`${rank} ${character}`, 'g');

@@ -59,24 +59,29 @@ export class TrainingCommand extends BaseCommand {
 			.setThumbnail(await Division.GetLogo(divisionName));
 		const role = await Division.GetRole(divisionName);
 		channel.send(`TRAINING SCHEDULED <@&${role.id}>`).then((msg) => msg.delete());
-		const calloutButtons = new MessageActionRow().addComponents([new MessageButton({ 
-			label: 'Attending',
-			style: 'PRIMARY',
-			type: 'BUTTON',
-			customId: 'attending'
-		}), new MessageButton({
-			label: 'Not Attending',
-			style: 'SUCCESS',
-			type: 'BUTTON',
-			customId: 'not attending'
-		})]);
-		if(params.url !== null) {
-			calloutButtons.addComponents(new MessageButton({
-				label: 'Information',
-				url: params.url,
+		const calloutButtons = new MessageActionRow().addComponents([
+			new MessageButton({
+				label: 'Attending',
+				style: 'PRIMARY',
 				type: 'BUTTON',
-				style: 'LINK'
-			}));
+				customId: 'attending',
+			}),
+			new MessageButton({
+				label: 'Not Attending',
+				style: 'SUCCESS',
+				type: 'BUTTON',
+				customId: 'not attending',
+			}),
+		]);
+		if (params.url !== null) {
+			calloutButtons.addComponents(
+				new MessageButton({
+					label: 'Information',
+					url: params.url,
+					type: 'BUTTON',
+					style: 'LINK',
+				}),
+			);
 		}
 		const embed = await channel.send({ embeds: [trainingEmbed], components: [calloutButtons] });
 

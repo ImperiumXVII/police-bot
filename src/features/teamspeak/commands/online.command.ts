@@ -21,7 +21,10 @@ export class OnlineCommand extends BaseCommand {
 			};
 		});
 		const membersDone = await Promise.all(members);
-		membersDone.splice(membersDone.findIndex(m => m.nickname === 'Police Administration'), 1);
+		membersDone.splice(
+			membersDone.findIndex((m) => m.nickname === 'Police Administration'),
+			1,
+		);
 		const membersEmbed = new MessageEmbed({
 			title: 'TeamSpeak Information',
 			description: 'TeamSpeak online users & away status.\n*\\* Italic lines means AFK.*',
@@ -30,9 +33,11 @@ export class OnlineCommand extends BaseCommand {
 			fields: [
 				{
 					name: '**Group**',
-					value: membersDone.map((m) => {
-						return m.away ? `_${this.getBestGroup(m.groups)}_` : `${this.getBestGroup(m.groups)}`;
-					}).join('\n'),
+					value: membersDone
+						.map((m) => {
+							return m.away ? `_${this.getBestGroup(m.groups)}_` : `${this.getBestGroup(m.groups)}`;
+						})
+						.join('\n'),
 					inline: true,
 				},
 				{

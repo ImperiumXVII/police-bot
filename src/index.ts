@@ -20,24 +20,24 @@ const features = [TrainingFeature, Character, Callout, Testing, TeamSpeakAPI];
 			await Character.Init();
 			await Command.Init(features);
 		});
-	} catch(error) {
+	} catch (error) {
 		LogSystem.Error('Init', error);
 	}
 })();
 
 export class utils {
 	static wait(time: number): Promise<void> {
-		return new Promise<void>(resolve => {
+		return new Promise<void>((resolve) => {
 			setTimeout(() => {
 				resolve();
-			}, time*1000);
+			}, time * 1000);
 		});
 	}
 
 	static waitUntil(check: boolean): Promise<void> {
-		return new Promise<void>(resolve => {
+		return new Promise<void>((resolve) => {
 			setInterval(() => {
-				if(check === true) {
+				if (check === true) {
 					resolve();
 				}
 			}, 2000);

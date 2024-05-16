@@ -20,7 +20,7 @@ export class VerifyTS3Command extends BaseCommand {
 			return;
 		}
 		const hasRole = this.getTeamSpeakGroupsFromDiscordRoles(user);
-		try {		
+		try {
 			const trues = Object.values(hasRole);
 			const groupNames: string[] = [];
 			for (const t of trues) {
@@ -41,7 +41,7 @@ export class VerifyTS3Command extends BaseCommand {
 			}
 			message.channel.send(`**${Character.GetCharacterName(user)}** was assigned to server groups \`${groupNames.join('`, `')}\``);
 			TeamSpeakAPI.Log(`**${Character.GetCharacterName(user)}** was assigned to server groups \`${groupNames.join('`, `')}\``);
-		} catch(e) {
+		} catch (e) {
 			LogSystem.Error('TeamSpeak', e);
 		}
 	}

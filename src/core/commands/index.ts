@@ -33,8 +33,8 @@ export class Command {
 				});
 			});
 		const commandString: string[] = [];
-		this.Commands.forEach(c => {
-			if(c.length === 1) {
+		this.Commands.forEach((c) => {
+			if (c.length === 1) {
 				commandString.push(`\`${c[0]}\``);
 			} else {
 				commandString.push(`\`${JSON.stringify(c).replace(/"/g, '').replace(/,/g, ', ')}\``);
@@ -114,7 +114,8 @@ export class Command {
 				}
 			}
 			if (command.$options.guard.permissions !== undefined && commandAllowed == false) {
-				const userPermissions = message.guild?.members.resolve(message.author)
+				const userPermissions = message.guild?.members
+					.resolve(message.author)
 					?.permissions.toArray()
 					.some((p) => {
 						return command.$options.guard?.groups?.includes(p) || false;

@@ -96,25 +96,28 @@ export class CalloutCommand extends BaseCommand {
 			.setTimestamp();
 		const calloutTags = `${params.tags} - ${params.incident}`;
 		channel.send(calloutTags).then((msg) => msg.delete());
-		const calloutButtons = new MessageActionRow().addComponents([new MessageButton({ 
-			label: 'Respond',
-			style: 'SUCCESS',
-			type: 'BUTTON',
-			customId: 'respond',
-		}), new MessageButton({
-			label: 'Conclude',
-			style: 'DANGER',
-			type: 'BUTTON',
-			customId: 'conclude',
-		}), new MessageButton({
-			label: 'Request SWAT',
-			style: 'PRIMARY',
-			type: 'BUTTON',
-			customId: 'request swat',
-			disabled: divisionArray.includes('D Platoon')
-		})]);
-		const embed = await channel.send({ embeds: [calloutEmbed], components: [calloutButtons] }) as Message;
-		
+		const calloutButtons = new MessageActionRow().addComponents([
+			new MessageButton({
+				label: 'Respond',
+				style: 'SUCCESS',
+				type: 'BUTTON',
+				customId: 'respond',
+			}),
+			new MessageButton({
+				label: 'Conclude',
+				style: 'DANGER',
+				type: 'BUTTON',
+				customId: 'conclude',
+			}),
+			new MessageButton({
+				label: 'Request SWAT',
+				style: 'PRIMARY',
+				type: 'BUTTON',
+				customId: 'request swat',
+				disabled: divisionArray.includes('D Platoon'),
+			}),
+		]);
+		const embed = (await channel.send({ embeds: [calloutEmbed], components: [calloutButtons] })) as Message;
 
 		const messageRepository = getRepository(CollectorEntity);
 		const messageEntity: CollectorEntity = {

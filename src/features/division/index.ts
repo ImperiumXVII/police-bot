@@ -12,8 +12,8 @@ export class Division {
 	static readonly availableRoles: string[] = [];
 
 	static async Init(): Promise<void> {
-		if(!PoliceBot.Guild) {
-			await new Promise<void>(resolve => {
+		if (!PoliceBot.Guild) {
+			await new Promise<void>((resolve) => {
 				setTimeout(() => {
 					resolve();
 				}, 2500);
@@ -30,35 +30,43 @@ export class Division {
 		const groupString: EmbedField[][] = [[]];
 		const divisionEmbeds: MessageEmbed[] = [];
 		[...new Set(this.Bureaus)].forEach((b, idx) => {
-			const groups = [...new Set(divs.filter(g => g.bureau_name === b).map(g => g.group_name))];
-			groups.forEach(g => {
-				const divisions = divs.filter(d => d.group_name === g).map(d => {
-					if(d.group_name !== d.division_name) {
-						return d.division_name;
-					} else {
-						return '';
-					}
-				});
+			const groups = [...new Set(divs.filter((g) => g.bureau_name === b).map((g) => g.group_name))];
+			groups.forEach((g) => {
+				const divisions = divs
+					.filter((d) => d.group_name === g)
+					.map((d) => {
+						if (d.group_name !== d.division_name) {
+							return d.division_name;
+						} else {
+							return '';
+						}
+					});
 				divisions.forEach((d, idx2) => {
-					if(d.length === 0) {
+					if (d.length === 0) {
 						divisions.splice(idx2, 1);
 					}
 				});
-				if(!groupString[idx]) {
+				if (!groupString[idx]) {
 					groupString[idx] = [];
 				}
 				groupString[idx].push({ name: g, value: `${divisions.length !== 0 ? '\n' + divisions.join('\n') : '\u200B'}`, inline: false });
 			});
-			divisionEmbeds.push(new MessageEmbed()
-				.setTitle(b)
-				.setTimestamp()
-				.setThumbnail(divs.find(bureau => bureau.bureau_name === b)?.bureau_logo || lspd_logo)
-				.setFooter('Los Santos Police Department')
-				.setColor('#8D8dFF')
-				.addFields(groupString[idx])
+			divisionEmbeds.push(
+				new MessageEmbed()
+					.setTitle(b)
+					.setTimestamp()
+					.setThumbnail(divs.find((bureau) => bureau.bureau_name === b)?.bureau_logo || lspd_logo)
+					.setFooter('Los Santos Police Department')
+					.setColor('#8D8dFF')
+					.addFields(groupString[idx]),
 			);
 		});
-		LogSystem.DiscordLog('Division', `Loaded ${[...new Set(this.Sections)].length} sections in ${[...new Set(this.Divisions)].length} divisions across ${[...new Set(this.Bureaus)].length} bureaus.`);
+		LogSystem.DiscordLog(
+			'Division',
+			`Loaded ${[...new Set(this.Sections)].length} sections in ${[...new Set(this.Divisions)].length} divisions across ${
+				[...new Set(this.Bureaus)].length
+			} bureaus.`,
+		);
 		const channel = PoliceBot.Guild?.channels.cache.find((c) => c.name === 'bot-testing');
 		if (!channel) return;
 		(channel as TextChannel).send({ embeds: [...divisionEmbeds] });

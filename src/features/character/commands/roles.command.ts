@@ -7,22 +7,21 @@ import { ForumGroupEntity } from '../../../entities/forum-group.entity';
 
 @Command({
 	name: 'roles2',
-	channel: ['group-requests', 'bot-testing']
+	channel: ['group-requests', 'bot-testing'],
 })
 export class RolesCommand extends BaseCommand {
 	async run(user: DiscordEntity, message: Message): Promise<void> {
 		const list = user.roles;
 		const repo = getRepository(ForumGroupEntity);
 		const roles: Promise<ForumGroupEntity | undefined>[] = [];
-		list.forEach(l => {
+		list.forEach((l) => {
 			const groups = repo.findOne({ role_name: l });
 			roles.push(groups);
 		});
 		const rolesDone = await Promise.all(roles);
-		const embed = new MessageEmbed()
-			.setTitle('Forum Groups');
-		rolesDone.forEach(rd => {
-			if(rd) {
+		const embed = new MessageEmbed().setTitle('Forum Groups');
+		rolesDone.forEach((rd) => {
+			if (rd) {
 				embed.addField(rd.role_name, rd.forum_groups.join('\n'), false);
 			}
 		});

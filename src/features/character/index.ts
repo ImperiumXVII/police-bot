@@ -24,13 +24,13 @@ export class Character {
 	static FactionMembersLoaded: boolean;
 
 	static async Init(): Promise<void> {
-		if(!PoliceBot.Guild) {
+		if (!PoliceBot.Guild) {
 			utils.waitUntil(PoliceBot.Guild !== undefined);
 		}
 		LogSystem.DiscordLog('Character', 'Loading faction members');
 		this.LoadFactionMembers().then(() => {
 			LogSystem.DiscordLog('Character', 'Faction members loaded.');
-			LogSystem.DiscordLog('Character', this.FactionMembers.map(m => m.character).join('\n'));
+			LogSystem.DiscordLog('Character', this.FactionMembers.map((m) => m.character).join('\n'));
 		});
 		//await this.GetUserRequiredRoles(58561);
 	}
@@ -41,10 +41,10 @@ export class Character {
 	static async GetGroupsForRole(role: string): Promise<string[]> {
 		const roleRepository = getRepository(ForumGroupEntity);
 		const roleFound = await roleRepository.findOne({ role_name: role });
-		if(!roleFound) {
+		if (!roleFound) {
 			const roleToAdd: ForumGroupEntity = {
 				role_name: role,
-				forum_groups: []
+				forum_groups: [],
 			};
 			roleRepository.insert(roleToAdd);
 			return [];
@@ -54,7 +54,7 @@ export class Character {
 
 	static async GetUserRequiredRoles(user: DiscordEntity | number): Promise<void> {
 		let forumGroups!: string;
-		if(typeof user === 'number') {
+		if (typeof user === 'number') {
 			forumGroups = await this.GetForumGroups(user);
 		} else {
 			forumGroups = await this.GetForumGroups(user.serial);
@@ -65,10 +65,10 @@ export class Character {
 	static async AddGroupToRole(role: string, groups: string[]): Promise<void> {
 		const roleRepository = getRepository(ForumGroupEntity);
 		const roleFound = await roleRepository.findOne({ role_name: role });
-		if(!roleFound) {
+		if (!roleFound) {
 			const roleToAdd: ForumGroupEntity = {
 				role_name: role,
-				forum_groups: groups
+				forum_groups: groups,
 			};
 			await roleRepository.insert(roleToAdd);
 			return;
@@ -153,7 +153,7 @@ export class Character {
 	}
 
 	static GetCharacterName(user?: DiscordEntity): string | undefined {
-		if(!user) return undefined;
+		if (!user) return undefined;
 		const character = PoliceBot.Guild?.members.cache.get(user.id);
 		return user.character ? user.character : character?.displayName.split('(')[0].trim().replace(' ', '_').split(' ')[0].replace('_', ' ');
 	}
@@ -165,19 +165,19 @@ export class Character {
 
 	static GetCharacterFromNickname(user: User): DiscordEntity | undefined {
 		const characterName = this.GetCharacterNameFromNickname(user);
-		return this.FactionMembers.find(fm => fm.character === characterName || fm.alternates.some(a => a.name === characterName));
+		return this.FactionMembers.find((fm) => fm.character === characterName || fm.alternates.some((a) => a.name === characterName));
 	}
 
 	static async PurgeTerminated(): Promise<string> {
 		const discordRepository = getRepository(DiscordEntity);
 		const allUsers = await discordRepository.find();
 		const purgeList: string[] = [];
-		allUsers.forEach(u => {
-			if(u.roles.length === 0) {
+		allUsers.forEach((u) => {
+			if (u.roles.length === 0) {
 				purgeList.push(u.character + ' (no groups)');
 				u.roles = [];
-				discordRepository.delete(u).catch(e => LogSystem.Error('Purge', e));
-			} else if(JSON.stringify(u.roles).includes('guild')) {
+				discordRepository.delete(u).catch((e) => LogSystem.Error('Purge', e));
+			} else if (JSON.stringify(u.roles).includes('guild')) {
 				purgeList.push(u.character + ' (not in Discord)');
 				discordRepository.delete(u);
 			}
@@ -224,7 +224,7 @@ export class Character {
 	static async LoadFactionMembers(): Promise<void> {
 		const userRepository = getRepository(DiscordEntity);
 		const users = await userRepository.find();
-		users.forEach(u => {
+		users.forEach((u) => {
 			this.FactionMembers.push(u);
 		});
 		this.FactionMembersLoaded = true;
@@ -249,7 +249,7 @@ export class Character {
 				id: '-1',
 				rank: 'Unknown',
 				roles: [],
-				alternates: []
+				alternates: [],
 			},
 			false,
 		];
@@ -300,8 +300,9 @@ export class Character {
 				return LogSystem.Error('Character', `${character} has a serial number of -1. Skipping.`);
 			}
 			const rank = await this.GetCharacterRank(serial);
-			const roles = PoliceBot.Guild?.members.cache.get(client.id)?.roles.cache
-				.filter((r: Role) => {
+			const roles = PoliceBot.Guild?.members.cache
+				.get(client.id)
+				?.roles.cache.filter((r: Role) => {
 					return r.name !== '@everyone';
 				})
 				.map((r: Role) => {

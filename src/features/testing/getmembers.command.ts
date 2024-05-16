@@ -24,7 +24,7 @@ export type GetMembersCommandParams = {
 		group2: {
 			validator: 'word',
 			hint: '@group',
-			default: null
+			default: null,
 		},
 	},
 })
@@ -46,7 +46,7 @@ export class GetMembersCommand extends BaseCommand {
 		await PoliceBot.Guild?.members.fetch({ force: true });
 		const mems = groupToSearch.members
 			.filter((m) => {
-				if(secondGroup === groupToSearch) {
+				if (secondGroup === groupToSearch) {
 					return m.roles.cache.find((r) => r === groupToSearch) !== undefined;
 				} else {
 					return m.roles.cache.find((r) => r === groupToSearch) !== undefined && m.roles.cache.find((r) => r === secondGroup) !== undefined;
@@ -56,24 +56,26 @@ export class GetMembersCommand extends BaseCommand {
 				return {
 					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					char: Character.GetCharacterNameFromNickname(m.user)!,
-					user: m.user.tag
+					user: m.user.tag,
 				};
 			});
 		const timeTaken = (Date.now() - timeNow) / 1000;
 		const fullMembers: string[] = [];
 		const tags: string[] = [];
 		const characters: string[] = [];
-		mems.forEach(m => {
+		mems.forEach((m) => {
 			fullMembers.push(`${m.char} (${m.user})`);
 			characters.push(m.char);
 			tags.push(m.user);
 		});
-		if(characters.join('\n').length > 1024 || tags.join('\n').length > 1024) {
+		if (characters.join('\n').length > 1024 || tags.join('\n').length > 1024) {
 			fs.writeFile(`./user-requests/${timeNow}.txt`, fullMembers.join('\n'), () => {
-				msg.edit(`Found all users in ${groupToSearch.name}${secondGroup !== groupToSearch ? ' and ' + secondGroup.name : ''} in ${timeTaken} seconds!`).then(async () => {
+				msg.edit(
+					`Found all users in ${groupToSearch.name}${secondGroup !== groupToSearch ? ' and ' + secondGroup.name : ''} in ${timeTaken} seconds!`,
+				).then(async () => {
 					try {
 						await message.channel.send({ files: [`./user-requests/${timeNow}.txt`] });
-					} catch(e) {
+					} catch (e) {
 						LogSystem.Error('GetMembersCommand', e);
 					}
 				});
@@ -84,12 +86,18 @@ export class GetMembersCommand extends BaseCommand {
 				.setFooter(user.character)
 				.setTitle(`${groupToSearch.name} ${secondGroup !== groupToSearch ? '& ' + secondGroup.name : ''}`)
 				.setTimestamp()
-				.addFields({
-					name: 'Character', inline: true, value: characters.join('\n') || '\u200B'
-				},{
-					name: 'Username', inline: true, value: tags.join('\n') || '\u200B'
-				})
-			;
+				.addFields(
+					{
+						name: 'Character',
+						inline: true,
+						value: characters.join('\n') || '\u200B',
+					},
+					{
+						name: 'Username',
+						inline: true,
+						value: tags.join('\n') || '\u200B',
+					},
+				);
 			await message.channel.send({ embeds: [memberEmbed] });
 		}
 	}
